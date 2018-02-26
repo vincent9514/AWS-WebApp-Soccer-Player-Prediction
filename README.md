@@ -47,17 +47,16 @@ Modeling
 Configuration
 --------------
 * Doing the following format:
-DIALECT = 'mysql'
-DRIVER = 'pymysql'
-USERNAME = '   '
-PASSWORD = '   '
-HOST = '   '
-PORT = '   '
-DATABASE = '   '
 
-SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(DIALECT,DRIVER,USERNAME,PASSWORD,HOST,PORT,DATABASE)
-
-SQLALCHEMY_TRACK_MODIFICATIONS=False
+* DIALECT = 'mysql'
+* DRIVER = 'pymysql'
+* USERNAME = '   '
+* PASSWORD = '   '
+* HOST = '   '
+* PORT = '   '
+* DATABASE = '   '
+* SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(DIALECT,DRIVER,USERNAME,PASSWORD,HOST,PORT,DATABASE)
+* SQLALCHEMY_TRACK_MODIFICATIONS=False
 
 
 Project Organization
