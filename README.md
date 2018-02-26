@@ -62,6 +62,8 @@ Project Organization
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
     │
+    ├── models             <- Web Application constructed by Flask platform
+    │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
     │                         `1.0-jqp-initial-data-exploration`.
