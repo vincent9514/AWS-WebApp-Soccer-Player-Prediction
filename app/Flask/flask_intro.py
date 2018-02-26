@@ -91,9 +91,9 @@ def model(): #create model function to run the model and generate the output to 
     input_array[0][9]=Num_Positions #Num_Positions
     
     
-    pkl_file = open('static/model/lm.pkl', 'rb') #open the pickle model
-    linearmodel = pickle.load(pkl_file)
-    raw_output= linearmodel.predict(input_array) #predict using the model
+    pkl_file = open('static/model/rfr.pkl', 'rb') #open the pickle model
+    random_forest_model = pickle.load(pkl_file)
+    raw_output= random_forest_model.predict(input_array) #predict using the model
     real_output=raw_output[0] #generate the output
     
     return render_template('result.html',prediction=real_output) #render the new page with output
