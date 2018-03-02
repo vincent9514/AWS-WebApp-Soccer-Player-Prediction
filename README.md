@@ -44,6 +44,19 @@ Modeling
 * Ridge Regression
 * Lasso Regression
 
+Configuration
+--------------
+* Doing the following format:
+
+* DIALECT = 'mysql'
+* DRIVER = 'pymysql'
+* USERNAME = '   '
+* PASSWORD = '   '
+* HOST = '   '
+* PORT = '   '
+* DATABASE = '   '
+* SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(DIALECT,DRIVER,USERNAME,PASSWORD,HOST,PORT,DATABASE)
+* SQLALCHEMY_TRACK_MODIFICATIONS=False
 
 
 Project Organization
@@ -61,6 +74,8 @@ Project Organization
     ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
+    │
+    ├── app                <- Web Application constructed by Flask platform
     │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
