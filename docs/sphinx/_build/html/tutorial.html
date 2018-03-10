@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>FIFA Application Tutorial &#8212; MSiA42-Soccer-PlMSiA423-Soccer-Player-Prediction 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Project Summary" href="project.html" />
+    <link rel="prev" title="Welcome to MSiA423-Soccer-Player-Prediction’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="fifa-application-tutorial">
+<h1>FIFA Application Tutorial<a class="headerlink" href="#fifa-application-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>This is the tutorial to set up the App locally</p>
+<ul>
+<li><p class="first">Step 0: Create an AWS account:</p>
+<p>Note: AWS requires a credit card for registration. But our example will exist entirely on the AWS Free Tier, so you won’t be charged.</p>
+</li>
+<li><p class="first">Step 1: Download the application code from github repository:</p>
+<p>Fork my Github repo: <a class="reference external" href="https://github.com/vincent9514/MSiA423-Soccer-Player-Prediction.git">https://github.com/vincent9514/MSiA423-Soccer-Player-Prediction.git</a></p>
+<p>We’re going to deploy a simple app that reads and writes from a database using Flask-SQLAchemy. Dig into the code if you’d like — it should run locally if you run python application.py (after you set you the environment in Step 4).</p>
+</li>
+<li><p class="first">Step 2: Set up your Flask environment:</p>
+<p>In the directory where the example code exists, create a Python virtual environment.</p>
+<p>$ virtualenv flask-aws</p>
+<p>$ source flask-aws/bin/activate</p>
+<p>Then install the packages needed for this demo with:</p>
+<p>$ pip install -r requirements.txt</p>
+</li>
+<li><p class="first">Step 3: Create a MySQL database using AWS RDS</p>
+<p>On the AWS console, go to Services &gt; RDS.</p>
+<p>Next, click “Launch a DB Instance”</p>
+<p>Select “MySql Community Edition”</p>
+<p>Select “No” for multi-AZ deployment — this will keep us in the Free Tier.</p>
+<p>Select “DB Instance Class” as db.t2.micro (keeps us in the Free Tier), “Multi-AZ Deployment” as “no” (they’re really pushing that, right?), and set up your DB instance name, user name, and password.</p>
+<p>For the advanced DB settings, leave the security group is “default” and set the Database Name to whatever you’d like.</p>
+<p>Click “Launch DB Instance” then “View DB Instances.”</p>
+</li>
+<li><p class="first">Step 3.5: Modify the permissions on your DB</p>
+<p>Go to your AWS dashboard, click “EC2” and you’ll see the screen below. Click “Security Groups”:</p>
+<p>Click “Create a Security Group.” Now you can modify who can access your DB.</p>
+<p>Scroll down to “Network and Security” and change it to the security group we just created.</p>
+</li>
+<li><p class="first">Step 4: Add tables to your DB instance</p>
+<p>First, go to your AWS console, RDS, and click on “DB Instances” Copy the “Endpoint” string — this is the URL to your AWS DB:</p>
+<p>Edit the config.py file to include the username, password, and db name you entered earlier, in the format:</p>
+<p>SQLALCHEMY_DATABASE_URI = ‘mysql+pymysql://&lt;db_user&gt;:&lt;db_password&gt;&#64;&lt;endpoint&gt;/&lt;db_url&gt;’</p>
+<p>Now create the tables in your (currently) empty database by running</p>
+<p>$ python db_create.py</p>
+</li>
+<li><p class="first">Step 4.5 Test the Flask App:</p>
+<p>$ python application.py</p>
+</li>
+<li><p class="first">Step 5: Set up Elastic Beanstalk Environment</p>
+<p>$ pip install awsebcli</p>
+<p>To create a new user, go to the AWS Console and select Identity and Access Management</p>
+<p>Initialize our Elastic Beanstalk environment</p>
+<blockquote>
+<div><p>$ eb init</p>
+</div></blockquote>
+<p>You’ll see:</p>
+<p>Select a default region
+1) us-east-1 : US East (N. Virginia)
+2) us-west-1 : US West (N. California)
+3) us-west-2 : US West (Oregon)
+4) eu-west-1 : EU (Ireland)
+5) eu-central-1 : EU (Frankfurt)
+6) ap-southeast-1 : Asia Pacific (Singapore)
+7) ap-southeast-2 : Asia Pacific (Sydney)
+8) ap-northeast-1 : Asia Pacific (Tokyo)
+9) sa-east-1 : South America (Sao Paulo)
+(default is 3): 1</p>
+<p>Chose the location closest to you (mine is Northern Virginia). Next you’ll be prompted for the AWS ID and Secret Key for the user “flaskdemo” you saved somewhere:</p>
+<p>You have not yet set up your credentials or your credentials are incorrect
+You must provide your credentials.
+(aws-access-id): &lt;enter the 20 digit AWS ID&gt;
+(aws-secret-key): &lt;enter the 40 digit AWS secret key&gt;</p>
+<p>Next you’ll see:</p>
+<p>Select an application to use
+1) [ Create new Application ]
+(default is 1): 1</p>
+<p>Next we create the environment name. Hit “Enter” to use the default values:</p>
+<p>Enter Application Name
+(default is “flask-aws-tutorial”):
+Application flask-aws-tutorial has been created.</p>
+<p>Now the EBCLI just wants to make sure we’re using Python:</p>
+<p>It appears you are using Python. Is this correct?
+(y/n): y</p>
+<p>Select your Python version. I’m a fan of 2.7 and wrote this example using it, so users of 3+ may find some incompatibilities with this code.</p>
+<p>Select a platform version.
+1) Python 3.4
+2) Python 2.7
+3) Python
+4) Python 3.4 (Preconfigured — Docker)
+(default is 1): 1</p>
+<p>You have the option of creating an SSH connection to this instance. We won’t need to use it, so I recommend “no.” (If you need to ssh into this instance later, you can change the preferences of your EC2 instance from the AWS console later.)</p>
+<p>Do you want to set up SSH for your instances?
+(y/n): n</p>
+<p>Okay, now we’re all set up.</p>
+</li>
+<li><p class="first">Step 6: Deploy our Flask Application</p>
+<p>$ eb create</p>
+<p>Now we have to create an environment name and DNS CNAME for our app.</p>
+<p>Once you’ve selected a unique DNS CNAME, you’ll see status updates as the app is deployed.</p>
+<p>When the uploading finishes, you’ll see:</p>
+<p>INFO: Application available at thisisacoolflaskapp.elasticbeanstalk.com.
+INFO: Successfully launched environment: flask-aws-tutorial-dev</p>
+<p>Point your web browser to that URL and you’ll see your Flask app live!</p>
+</li>
+<li><p class="first">Step 7: Check out the app</p>
+<p>Whenever you update a file, simply type</p>
+<p>$ eb deploy</p>
+<p>when your new changes are ready.</p>
+</li>
+<li><p class="first">Congrats on your first AWS site</p>
+</li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to MSiA423-Soccer-Player-Prediction&#8217;s documentation!</a></li>
+      <li>Next: <a href="project.html" title="next chapter">Project Summary</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/tutorial.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Vincent Wang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/tutorial.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
