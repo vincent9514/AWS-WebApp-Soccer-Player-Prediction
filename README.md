@@ -77,6 +77,8 @@ Project Organization
     │
     ├── app                <- Web Application constructed by Flask platform
     │
+    ├── Unit_Test          <- Unit test for different models
+    │
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
     │                         the creator's initials, and a short `-` delimited description, e.g.
     │                         `1.0-jqp-initial-data-exploration`.
