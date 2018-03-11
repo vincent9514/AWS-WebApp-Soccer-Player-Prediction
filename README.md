@@ -43,10 +43,12 @@ Modeling
 * Linear Regression
 * Ridge Regression
 * Lasso Regression
+* Random Forest
+* Neural Network
 
 Configuration
 --------------
-* Doing the following format:
+* Doing the following format in the config.py:
 
 * DIALECT = 'mysql'
 * DRIVER = 'pymysql'
@@ -70,17 +72,39 @@ Project Organization
     │   ├── interim        <- Intermediate data that has been transformed.
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
-    │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    │       ├── CompleteDataset.csv
+    |       ├── PlayerAttributeData.csv
+    |       ├── PlayerPersonalData.csv
+    |       └── PlayerPlayingPositionData.csv
+    |
+    ├── docs               <- A Sphinx project showing the introduction, code, and tutorial
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
-    │
-    ├── app                <- Web Application constructed by Flask platform
-    │
+    │   ├── train_model.py <- Python Script to train models including linear, ridge, lasso, randomforest, neural network.
+    │   ├── lm.pkl         <- The pickle linear regression model.
+    │   └── rfr.pkl        <- The pickle randomforest model.
+    |
+    ├── app                <- Web Application
+    │   └── Flask          <- Web Application constructed by Flask platform
+    │       ├── application.py
+    |       ├── requirements.txt
+    |       ├── config.py
+    |       ├── static
+    |       ├── templates
+    |       └── tests
+    |           ├── test_basic.py
+    |           ├── test_flask.py
+    |           ├── test_linear_model.py
+    |           ├── test_lasso_model.py
+    |           ├── test_ridge_model.py
+    |           ├── test_nnet_model.py
+    |           └── test_randomforest_model.py
+    |
     ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
-    │
+    │   |                     the creator's initials, and a short `-` delimited description, e.g.
+    │   |                     `1.0-jqp-initial-data-exploration`.
+    |   └── EDA.ipynb      <- EDA Notebook to explain the FIFA Dataset.
+    |
     ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
     │
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
@@ -104,7 +128,7 @@ Project Organization
     │   │   └── train_model.py
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │       └── visualize.ipynb
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.testrun.org
 

@@ -17,6 +17,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn import metrics
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.neural_network import MLPRegressor
 
 def linear_regression(dataset):
     dt2=dataset[['Age', 'Overall',
@@ -111,3 +113,24 @@ def lasso_regression(X_train, X_test, y_train, y_test):
     print(mean_squared_error(y_test, pred2))
     
     return lasso, pred3
+
+def randomforest(X_train, X_test, y_train, y_test):
+    rfr = RandomForestRegressor(n_estimators=100)
+    rfr.fit(X_train,y_train)
+    rfr_pred = rfr.predict(X_test)
+    print('MAE_rfr:', metrics.mean_absolute_error(y_test, rfr_pred))
+    print('MSE_rfr:', metrics.mean_squared_error(y_test, rfr_pred))
+    print('RMSE_rfr:', np.sqrt(metrics.mean_squared_error(y_test, rfr_pred)))
+
+    return rfr, rfr_pred
+
+
+def nnet(X_train, X_test, y_train, y_test):
+    mlp = MLPRegressor(hidden_layer_sizes=(30,30,30),max_iter=1000)
+    mlp.fit(X_train,y_train)
+    predictions = mlp.predict(X_test)
+    print('MAE_nnet:', metrics.mean_absolute_error(y_test, predictions))
+    print('MSE_nnet:', metrics.mean_squared_error(y_test, predictions))
+    print('RMSE_nnet:', np.sqrt(metrics.mean_squared_error(y_test, predictions)))
+
+    return mlp, predictions
