@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Flask Code Documentation &#8212; MSiA42-Soccer-PlMSiA423-Soccer-Player-Prediction 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Web Design" href="web_design.html" />
+    <link rel="prev" title="Project Summary" href="project.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="flask-code-documentation">
+<h1>Flask Code Documentation<a class="headerlink" href="#flask-code-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-python:"><div class="highlight"><pre><span></span>from flask import Flask,request,render_template  #load flask and realtive libraries
+from flask_sqlalchemy import SQLAlchemy #load library to connect the database
+import pickle   #load the package to import the trained model
+import numpy as np   #used to transfer the variable into the input data type of the model
+import config   #import the credential
+
+application = Flask(__name__)   #create the flask application
+
+application.config.from_object(config) #connect db
+db= SQLAlchemy(application)
+
+#creat a table in db
+#class Article(db.Model):
+#    __tablename__=&#39;article&#39;
+#    id=db.Column(db.Integer,primary_key=True,autoincrement=True)
+#    title=db.Column(db.String(100),nullable=False)
+
+#db.create_all()#check if connected with db
+
+
+class Player(db.Model): #create the database model to save the user input from the front end
+    __tablename__=&#39;player&#39; #creare a table &quot;player&quot;
+    id=db.Column(db.Integer,primary_key=True,autoincrement=True)  #id
+    Age=db.Column(db.Integer) #age
+    Wage=db.Column(db.Integer) #wage
+    Overall_Rating=db.Column(db.Integer) #overall_rating
+    Potential=db.Column(db.Integer) #potential
+    Composure=db.Column(db.Integer) #composure
+    Marking=db.Column(db.Integer) #marking
+    Reactions=db.Column(db.Integer) #reaction
+    Vision=db.Column(db.Integer) #vision
+    Volleys=db.Column(db.Integer) #volleys
+    Num_Positions=db.Column(db.Integer) #num_positions
+
+db.create_all()
+
+@application.route(&#39;/&#39;, methods = [&#39;GET&#39;])
+
+def index():
+    return render_template(&#39;index.html&#39;) #render the index page; no input needed
+
+
+    #article1=Article(title=&#39;aaa&#39;) #input data to db
+    #db.session.add(article1)
+    #db.session.commit()
+    &#39;&#39;&#39;
+    context={
+            &#39;username&#39;:u&#39;Vincent&#39;,
+            &#39;gender&#39;:u&#39;Male&#39;,
+            &#39;age&#39;:u&#39;Age&#39;
+            }
+    &#39;&#39;&#39;
+
+#render_template(&#39;index.html&#39;,age=u&#39;100&#39;)
+#**context
+
+
+@application.route(&#39;/&#39;, methods = [&#39;POST&#39;]) #create post method to get the user input from the front end
+def model(): #create model function to run the model and generate the output to the result page
+
+    #get the input from front end
+    Age = request.form[&#39;Age&#39;]
+    Wage = request.form[&#39;Wage&#39;]
+    Overall_Rating = request.form[&#39;Overall_Rating&#39;]
+    Potential = request.form[&#39;Potential&#39;]
+    Composure = request.form[&#39;Composure&#39;]
+    Marking = request.form[&#39;Marking&#39;]
+    Reactions = request.form[&#39;Reactions&#39;]
+    Vision = request.form[&#39;Vision&#39;]
+    Volleys = request.form[&#39;Volleys&#39;]
+    Num_Positions = request.form[&#39;Num_Positions&#39;]
+
+    player1=Player(Age=Age,Wage=Wage,Overall_Rating=Overall_Rating,Potential=Potential,Composure=Composure,
+                   Marking=Marking,Reactions=Reactions,Vision=Vision,Volleys=Volleys,Num_Positions=Num_Positions) #load the input into the database
+    db.session.add(player1)
+    db.session.commit() #update the info
+    #return render_template(&#39;index.html&#39;,Age=Age)
+
+
+    #set model input in to numpy array format
+    input_array=np.ndarray(shape=(1,10), dtype=float, order=&#39;F&#39;)
+    input_array[0][0]=Age #age
+    input_array[0][1]=Wage #Wage
+    input_array[0][2]=Overall_Rating #Overall_Rating
+    input_array[0][3]=Potential #Potential
+    input_array[0][4]=Composure #Composure
+    input_array[0][5]=Marking #Marking
+    input_array[0][6]=Reactions #Reactions
+    input_array[0][7]=Vision #Vision
+    input_array[0][8]=Volleys #Volleys
+    input_array[0][9]=Num_Positions #Num_Positions
+
+
+    pkl_file = open(&#39;static/model/rfr.pkl&#39;, &#39;rb&#39;) #open the pickle model
+    random_forest_model = pickle.load(pkl_file)
+    raw_output= random_forest_model.predict(input_array) #predict using the model
+    real_output=raw_output[0] #generate the output
+
+    return render_template(&#39;result.html&#39;,prediction=real_output) #render the new page with output
+
+#    if (Age == &#39;Age&#39;or Wage == &#39;Wage&#39; ):
+#        return &#39;&lt;h3&gt; test succeed&lt;/h3&gt;&#39;
+#    else:
+#        return &#39;&lt;h3&gt; invalid_Age &lt;/h3&gt;&#39;
+
+if __name__ == &#39;__main__&#39;:
+     application.run(host=&#39;0.0.0.0&#39;,debug=True)
+</pre></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="project.html" title="previous chapter">Project Summary</a></li>
+      <li>Next: <a href="web_design.html" title="next chapter">Web Design</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/code.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Vincent Wang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/code.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
