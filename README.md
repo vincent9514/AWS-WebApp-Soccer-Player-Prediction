@@ -118,19 +118,23 @@ Project Organization
     |   │    └── EDA.ipynb          <- EDA Notebook to explain the FIFA Dataset.
     │   │
     │   └── src                     <- Source code for use in this project.
-    │       ├── __init__.py         <- Makes src a Python module
+ 
     │       │
     │       ├── data                <- Scripts to download or generate data
-    │       │   └── make_dataset.py
+    │       │   ├── __init__.py     <- Makes src a Python module
+    │       │   └── dataLoading.py  <- Data Loading and Processing Python Script
     │       │
-    │       ├── features            <- Scripts to turn raw data into features for modeling
-    │       │   └── build_features.py
+    │       ├── models              <- Scripts to train models and then use trained models to make predictions
+    │       │   └── trainModel.py   <- Model Training Python Script
     │       │
-    │       ├── models              <- Scripts to train models and then use trained models to make
-    │       │                          predictions
-    │       │
-    │       └── visualization       <- Scripts to create exploratory and results oriented visualizations
-    │           └── visualize.ipynb
+    |       └── tests
+    |           ├── make_dataset_test.py
+    |           ├── test_basic.py
+    |           ├── test_linear_model.py
+    |           ├── test_lasso_model.py
+    |           ├── test_ridge_model.py
+    |           ├── test_nnet_model.py
+    |           └── test_randomforest_model.py
     │
     ├── app                         <- Web Application
     │   └── Flask                   <- Web Application constructed by Flask platform
@@ -138,15 +142,8 @@ Project Organization
     |       ├── requirements.txt
     |       ├── config.py
     |       ├── static
-    |       ├── templates
-    |       └── tests
-    |           ├── test_basic.py
-    |           ├── test_flask.py
-    |           ├── test_linear_model.py
-    |           ├── test_lasso_model.py
-    |           ├── test_ridge_model.py
-    |           ├── test_nnet_model.py
-    |           └── test_randomforest_model.py
+    |       └── templates
+    | 
     │
     ├── requirements.txt            <- The requirements file for reproducing the analysis environment, e.g.
     │                                  generated with `pip freeze > requirements.txt

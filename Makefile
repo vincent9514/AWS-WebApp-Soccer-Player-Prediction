@@ -1,17 +1,23 @@
-data/external/CompleteDataset.csv: 
-data/exernal/PlayerAttributeData.csv: 
-data/external/PlayerPersonalData.csv: 
-data/external/PlayerPlayingPositionData.csv: 
 
-models/trainModel.py 
-python models/trainModel.py 
-FIFA: data/external/CompleteDataset.csv: 
-develop/models/rfr.pkl: models/trainModel.py
-	python models/trainModel.py
+data/external/CompleteDataset.csv: develop/src/data/dataLoading.py
+	python develop/src/data/dataLoading.py
 
-model: models/rfr.pkl
+FIFA: develop/data/processed/cleanFIFA.csv
 
-all: FIFA Prediction model
+develop/models/model.pkl: develop/src/models/trainModel.py
+	python develop/src/models/trainModel.py
+
+model: develop/models/rfr.pkl
+
+all: FIFA Model
+
+
+
+
+
+
+
+
 
 
 

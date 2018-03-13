@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Data Processing and Model building &#8212; MSiA42-Soccer-PlMSiA423-Soccer-Player-Prediction 1.0.0 documentation</title>
+    <title>Data Loading and Processing &#8212; MSiA42-Soccer-PlMSiA423-Soccer-Player-Prediction 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -43,11 +43,11 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="module-trainModel">
-<span id="data-processing-and-model-building"></span><h1>Data Processing and Model building<a class="headerlink" href="#module-trainModel" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-dataLoading">
+<span id="data-loading-and-processing"></span><h1>Data Loading and Processing<a class="headerlink" href="#module-dataLoading" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="trainModel.find_continent">
-<code class="descclassname">trainModel.</code><code class="descname">find_continent</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#trainModel.find_continent" title="Permalink to this definition">¶</a></dt>
+<dt id="dataLoading.find_continent">
+<code class="descclassname">dataLoading.</code><code class="descname">find_continent</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#dataLoading.find_continent" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function categorize nations into continent and return continent strings</p>
 <p>continents dictionary was collected through online open source and generated manually</p>
 <dl class="docutils">
@@ -58,6 +58,36 @@
 </dl>
 </dd></dl>
 
+<dl class="function">
+<dt id="dataLoading.load_data">
+<code class="descclassname">dataLoading.</code><code class="descname">load_data</code><span class="sig-paren">(</span><em>input_path</em><span class="sig-paren">)</span><a class="headerlink" href="#dataLoading.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function loads a .csv and returns the X_train, X_test, y_train, y_test values for model input</p>
+<p>Before returning the model inputs, it converts the variables into desired format.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>input_path (str): Path to datasets</dd>
+<dt>Returns:</dt>
+<dd>X_train, X_test, y_train, y_test values for model input</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="dataLoading.str2number">
+<code class="descclassname">dataLoading.</code><code class="descname">str2number</code><span class="sig-paren">(</span><em>amount</em><span class="sig-paren">)</span><a class="headerlink" href="#dataLoading.str2number" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function makes different dollar units consistent and return cleansed column</p>
+<p>Before returning the cleansed column, it transfers the value with unit &#8220;Million&#8221;and
+&#8220;K&#8221;in the column input to the value with dollar unit</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>amount: input list</dd>
+<dt>Returns:</dt>
+<dd>the list with cleased dollar unit</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-trainModel">
+<span id="modeling"></span><h1>Modeling<a class="headerlink" href="#module-trainModel" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="trainModel.lasso_regression">
 <code class="descclassname">trainModel.</code><code class="descname">lasso_regression</code><span class="sig-paren">(</span><em>X_train</em>, <em>X_test</em>, <em>y_train</em>, <em>y_test</em><span class="sig-paren">)</span><a class="headerlink" href="#trainModel.lasso_regression" title="Permalink to this definition">¶</a></dt>
@@ -91,19 +121,6 @@ y_test: y_test set</dd>
 <dt>Returns:</dt>
 <dd>md1: sklearn linear regression model
 predictions: prediction result</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
-<dt id="trainModel.load_data">
-<code class="descclassname">trainModel.</code><code class="descname">load_data</code><span class="sig-paren">(</span><em>input_path</em><span class="sig-paren">)</span><a class="headerlink" href="#trainModel.load_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function loads a .csv and returns the X_train, X_test, y_train, y_test values for model input</p>
-<p>Before returning the model inputs, it converts the variables into desired format.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>input_path (str): Path to datasets</dd>
-<dt>Returns:</dt>
-<dd>X_train, X_test, y_train, y_test values for model input</dd>
 </dl>
 </dd></dl>
 
@@ -158,20 +175,6 @@ pred2: prediction result</dd>
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="trainModel.str2number">
-<code class="descclassname">trainModel.</code><code class="descname">str2number</code><span class="sig-paren">(</span><em>amount</em><span class="sig-paren">)</span><a class="headerlink" href="#trainModel.str2number" title="Permalink to this definition">¶</a></dt>
-<dd><p>This function makes different dollar units consistent and return cleansed column</p>
-<p>Before returning the cleansed column, it transfers the value with unit &#8220;Million&#8221;and
-&#8220;K&#8221;in the column input to the value with dollar unit</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>amount: input list</dd>
-<dt>Returns:</dt>
-<dd>the list with cleased dollar unit</dd>
-</dl>
-</dd></dl>
-
 </div>
 
 
@@ -179,7 +182,13 @@ pred2: prediction result</dd>
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Data Loading and Processing</a></li>
+<li><a class="reference internal" href="#module-trainModel">Modeling</a></li>
+</ul>
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>

@@ -1,4 +1,11 @@
-Data Processing and Model building
+Data Loading and Processing
+=========================================
+
+.. automodule:: dataLoading
+   :members:
+
+
+Modeling
 =========================================
 
 .. automodule:: trainModel
