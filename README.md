@@ -12,13 +12,60 @@ Project Charter:
 
 * Vision: Assist club manager to gain negotiation power in the transfer market, offer wise transfer fee and wage, and ultimately benefit the club from the deal.
 * Mission: Predict player’s value, wage, and overall rating by using predictive models based on the features including base stats, skills, preferred position, and club, etc.
-* Success criteria: a set of metrics for measuring the prediction errors including mean square error, mean absolute error, etc.
+* Success criteria: A Root Mean Square Error (RMSE) of lower than $800000 to measure the performance of the transfer market value prediction model and demonstrate the effectiveness of the web application.
 
 
 If you want to know more, this is a list of selected starting points:
 
 * FIFA18 Complete Dataset on Kaggle. https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset
 * FIFA Introduction. https://www.easports.com/fifa
+
+
+Getting Started:
+--------------
+
+### Set Up Your Virtual Environment
+
+Create a new virtual environment
+
+```
+virtualenv -p python3 fifapredict
+source fifapredict/bin/activate
+```
+
+Install requirements
+
+```
+pip install -r requirements.txt
+```
+
+### Get FIFA Player Dataset
+
+Download FIFA18 complete dataset from [here]https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset/downloads/fifa-18-demo-player-dataset.zip/5
+Unzip and store in `/data/external/`
+
+### Set up your `.evn` file
+
+* Doing the following format in the config.py:
+
+```
+DIALECT = 'mysql'
+DRIVER = 'pymysql'
+USERNAME = '   '
+PASSWORD = '   '
+HOST = '   '
+PORT = '   '
+DATABASE = '   '
+SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(DIALECT,DRIVER,USERNAME,PASSWORD,HOST,PORT,DATABASE)
+SQLALCHEMY_TRACK_MODIFICATIONS=False
+```
+
+### Run code
+
+```
+make all
+python app/Flask/application.py
+```
 
 Preprocessing Data
 --------------
@@ -45,20 +92,6 @@ Modeling
 * Lasso Regression
 * Random Forest
 * Neural Network
-
-Configuration
---------------
-* Doing the following format in the config.py:
-
-* DIALECT = 'mysql'
-* DRIVER = 'pymysql'
-* USERNAME = '   '
-* PASSWORD = '   '
-* HOST = '   '
-* PORT = '   '
-* DATABASE = '   '
-* SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(DIALECT,DRIVER,USERNAME,PASSWORD,HOST,PORT,DATABASE)
-* SQLALCHEMY_TRACK_MODIFICATIONS=False
 
 
 Project Organization

@@ -1,3 +1,20 @@
+data/external/CompleteDataset.csv: 
+data/exernal/PlayerAttributeData.csv: 
+data/external/PlayerPersonalData.csv: 
+data/external/PlayerPlayingPositionData.csv: 
+
+models/trainModel.py 
+python models/trainModel.py 
+FIFA: data/external/CompleteDataset.csv: 
+develop/models/rfr.pkl: models/trainModel.py
+	python models/trainModel.py
+
+model: models/rfr.pkl
+
+all: FIFA Prediction model
+
+
+
 .PHONY: clean data lint requirements sync_data_to_s3 sync_data_from_s3
 
 #################################################################################
