@@ -118,13 +118,13 @@ Project Organization
     |   │    └── EDA.ipynb          <- EDA Notebook to explain the FIFA Dataset.
     │   │
     │   └── src                     <- Source code for use in this project.
- 
     │       │
     │       ├── data                <- Scripts to download or generate data
     │       │   ├── __init__.py     <- Makes src a Python module
     │       │   └── dataLoading.py  <- Data Loading and Processing Python Script
     │       │
     │       ├── models              <- Scripts to train models and then use trained models to make predictions
+    │       │   ├── predictModel.py <- Model to predict the result
     │       │   └── trainModel.py   <- Model Training Python Script
     │       │
     |       └── tests

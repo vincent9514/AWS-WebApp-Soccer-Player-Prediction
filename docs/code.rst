@@ -5,8 +5,16 @@ Data Loading and Processing
    :members:
 
 
-Modeling
+Training Model
 =========================================
 
 .. automodule:: trainModel
    :members:
+
+Predict Model
+========================================
+
+.. automodule:: predictModel
+   :members:
+
+
