@@ -1,9 +1,18 @@
-#ridge regression
+#Lasso regression
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import Lasso
+import sys
+import os
+import pickle
+import logging
 
-def test_ridge_model():
+
+
+
+
+
+def test_lasso_model():
     #user inputs
     user_inputs = {
         'Age': [20,25,28,30,35],
@@ -23,5 +32,5 @@ def test_ridge_model():
     assert isinstance(user_inputs,pd.DataFrame)
     
     #check expected outcome
-    assert ridge.predict(inputs)==np.array([3864000.0,16780000.0,47295000.0,26325000.0,3390000.0])
+    assert lasso.predict(inputs)==np.array([3937000.0,19570000.0,49285000.0,25395000.0,3422000.0])
 

@@ -1,8 +1,13 @@
+#ridge regression
 import pandas as pd
 import numpy as np
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import Ridge
+import sys
+import os
+import pickle
+import logging
 
-def test_randomforest_model():
+def test_ridge_model():
     #user inputs
     user_inputs = {
         'Age': [20,25,28,30,35],
@@ -22,5 +27,5 @@ def test_randomforest_model():
     assert isinstance(user_inputs,pd.DataFrame)
     
     #check expected outcome
-    assert rfr.predict(inputs)==np.array([3933000.0,19190000.0,45345000.0,27645000.0,3394000.0])
+    assert ridge.predict(inputs)==np.array([3864000.0,16780000.0,47295000.0,26325000.0,3390000.0])
 

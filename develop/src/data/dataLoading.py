@@ -13,10 +13,14 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.model_selection import train_test_split
 import pickle
+import logging
 
 
 
-
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    filename='../../../mymodel.log',
+                    filemode='w')
 
 # clean the value string
 def str2number(amount):
@@ -31,6 +35,8 @@ def str2number(amount):
     Returns:
         the list with cleased dollar unit
     """
+    logger = logging.getLogger(__name__)
+    logger.info('Unit Consistent')
     if amount[-1] == 'M':
         return float(amount[1:-1]) * 1000000
     elif amount[-1] == 'K':
@@ -51,6 +57,9 @@ def find_continent(x):
         the value in continent
 
     """
+    logger = logging.getLogger(__name__)
+    logger.info('Country to Continent')
+    
 
     continents = {
         'Africa': ['Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina', 'Burundi', 'Cameroon', 'Cape Verde',
@@ -102,6 +111,8 @@ def load_data(input_path):
     Returns:
         X_train, X_test, y_train, y_test values for model input
     """
+    logger = logging.getLogger(__name__)
+    logger.info('Data Loaded')
     dataset = pd.read_csv('input_path', header=0)
     interesting_columns = [
         "Photo", 'Name', 'Age', 'Nationality', 'Overall',
@@ -138,166 +149,6 @@ def load_data(input_path):
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
     return X_train, X_test, y_train, y_test
-
-
-def linear_regression(X_train, X_test, y_train, y_test):
-    """This function trains the linear regression model.
-
-    Model development was done in a Jupyter notebook and chosen with
-    cross-validation accuracy as the performance metric.
-
-    Args:
-        X_train: X_train set
-        X_test: X_test set
-        y_train: y_train set
-        y_test: y_test set
-
-    Returns:
-        md1: sklearn linear regression model
-        predictions: prediction result
-
-    """
-
-    sc = StandardScaler()
-    X_train = sc.fit_transform(X_train)
-    X_test = sc.transform(X_test)
-    lm = LinearRegression()
-    md1 = lm.fit(X_train, y_train)
-    predictions = lm.predict(X_test)
-
-    print('MAE:', metrics.mean_absolute_error(y_test, predictions))
-    print('MSE:', metrics.mean_squared_error(y_test, predictions))
-    print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, predictions)))
-
-    return md1,predictions
-
-
-def ridge_regression(X_train, X_test, y_train, y_test):
-    """This function trains the ridge regression model.
-
-    Model development was done in a Jupyter notebook and chosen with
-    cross-validation accuracy as the performance metric.
-
-    Args:
-        X_train: X_train set
-        X_test: X_test set
-        y_train: y_train set
-        y_test: y_test set
-
-    Returns:
-        ridge2: ridge regression model
-        pred2: prediction result
-
-    """
-    ridge = Ridge(normalize=True)
-    coefs = []
-    alphas = 10 ** np.linspace(10, -2, 100) * 0.5
-    for a in alphas:
-        ridge.set_params(alpha=a)
-        ridge.fit(X_train, y_train)
-        coefs.append(ridge.coef_)
-
-    ridge2 = Ridge(alpha=4, normalize=True)
-    ridge2.fit(X_train, y_train)  # Fit a ridge regression on the training data
-    pred2 = ridge2.predict(X_test)  # Use this model to predict the test data
-    print(pd.Series(ridge2.coef_, index=X_train.columns))  # Print coefficients
-    print(mean_squared_error(y_test, pred2))
-
-    return ridge2, pred2
-
-
-def lasso_regression(X_train, X_test, y_train, y_test):
-    """This function trains the lasso_regression model.
-
-    Model development was done in a Jupyter notebook and chosen with
-    cross-validation accuracy as the performance metric.
-
-    Args:
-        X_train: X_train set
-        X_test: X_test set
-        y_train: y_train set
-        y_test: y_test set
-
-    Returns:
-        lasso: lasso regression model
-        pred3: prediction result
-
-    """
-    # Lasso
-    lasso = Lasso(max_iter=10000, normalize=True)
-    coefs = []
-    alphas = 10 ** np.linspace(10, -2, 100) * 0.5
-    for a in alphas:
-        lasso.set_params(alpha=a)
-        lasso.fit(scale(X_train), y_train)
-        coefs.append(lasso.coef_)
-
-    lasso2 = Lasso(alpha=1000, normalize=True)
-    lasso2.fit(X_train, y_train)  # Fit a lasso regression on the training data
-    pred3 = lasso2.predict(X_test)  # Use this model to predict the test data
-    print(pd.Series(lasso2.coef_, index=X_train.columns))  # Print coefficients
-    print(mean_squared_error(y_test, pred3))
-
-    return lasso, pred3
-
-
-def randomforest(X_train, X_test, y_train, y_test):
-    """This function trains the random forest model and pickles the model for later user.
-
-    Model development was done in a Jupyter notebook and chosen with
-    cross-validation accuracy as the performance metric.
-
-    Args:
-        X_train: X_train set
-        X_test: X_test set
-        y_train: y_train set
-        y_test: y_test set
-
-    Returns:
-        rfr: random forest model
-        rfr_pred: prediction result
-
-    """
-    rfr = RandomForestRegressor(n_estimators=100)
-    rfr.fit(X_train, y_train)
-    rfr_pred = rfr.predict(X_test)
-    print('MAE_rfr:', metrics.mean_absolute_error(y_test, rfr_pred))
-    print('MSE_rfr:', metrics.mean_squared_error(y_test, rfr_pred))
-    print('RMSE_rfr:', np.sqrt(metrics.mean_squared_error(y_test, rfr_pred)))
-
-    with open('rfr.pkl', 'wb') as fid:
-        pickle.dump(rfr, fid, 2)
-
-    return rfr, rfr_pred
-
-
-def nnet(X_train, X_test, y_train, y_test):
-    """
-
-    Args:
-        X_train: X_train set
-        X_test: X_test set
-        y_train: y_train set
-        y_test: y_test set
-
-    Returns:
-        mlp: neural network model
-        predictions: prediction result
-
-    """
-    mlp = MLPRegressor(hidden_layer_sizes=(30, 30, 30), max_iter=1000)
-    mlp.fit(X_train, y_train)
-    predictions = mlp.predict(X_test)
-    print('MAE_nnet:', metrics.mean_absolute_error(y_test, predictions))
-    print('MSE_nnet:', metrics.mean_squared_error(y_test, predictions))
-    print('RMSE_nnet:', np.sqrt(metrics.mean_squared_error(y_test, predictions)))
-
-    return mlp, predictions
-
-
-
-
-
 
 
 

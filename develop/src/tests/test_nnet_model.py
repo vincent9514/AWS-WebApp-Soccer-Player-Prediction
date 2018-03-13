@@ -1,9 +1,13 @@
-#Lasso regression
+#neural_network
 import pandas as pd
 import numpy as np
-from sklearn.linear_model import Lasso
+from sklearn.neural_network import MLPRegressor
+import sys
+import os
+import pickle
+import logging
 
-def test_lasso_model():
+def test_nnet_model():
     #user inputs
     user_inputs = {
         'Age': [20,25,28,30,35],
@@ -23,5 +27,5 @@ def test_lasso_model():
     assert isinstance(user_inputs,pd.DataFrame)
     
     #check expected outcome
-    assert lasso.predict(inputs)==np.array([3937000.0,19570000.0,49285000.0,25395000.0,3422000.0])
+    assert mlp.predict(inputs)==np.array([4143000.0,21530000.0,42365000.0,30115000.0,3596000.0])
 

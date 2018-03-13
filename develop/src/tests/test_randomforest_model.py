@@ -1,9 +1,12 @@
-#neural_network
 import pandas as pd
 import numpy as np
-from sklearn.neural_network import MLPRegressor
+from sklearn.ensemble import RandomForestRegressor
+import sys
+import os
+import pickle
+import logging
 
-def test_nnet_model():
+def test_randomforest_model():
     #user inputs
     user_inputs = {
         'Age': [20,25,28,30,35],
@@ -23,5 +26,5 @@ def test_nnet_model():
     assert isinstance(user_inputs,pd.DataFrame)
     
     #check expected outcome
-    assert mlp.predict(inputs)==np.array([4143000.0,21530000.0,42365000.0,30115000.0,3596000.0])
+    assert rfr.predict(inputs)==np.array([3933000.0,19190000.0,45345000.0,27645000.0,3394000.0])
 
