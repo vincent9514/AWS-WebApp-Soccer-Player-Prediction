@@ -12,39 +12,40 @@ Project Charter:
 
 * Vision: Assist club manager to gain negotiation power in the transfer market, offer wise transfer fee and wage, and ultimately benefit the club from the deal.
 * Mission: Predict player’s value, wage, and overall rating by using predictive models based on the features including base stats, skills, preferred position, and club, etc.
-* Success criteria: A Root Mean Square Error (RMSE) of lower than $800000 to measure the performance of the transfer market value prediction model and demonstrate the effectiveness of the web application.
+* Success criteria: A R^2 of greater than 80% to measure the performance of the transfer market value prediction model and demonstrate the effectiveness of the web application.
 
 
 If you want to know more, this is a list of selected starting points:
 
-* FIFA18 Complete Dataset on Kaggle. https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset
-* FIFA Introduction. https://www.easports.com/fifa
+* [FIFA18 Complete Dataset on Kaggle](https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset)
+* [FIFA Offical Website](https://www.easports.com/fifa)
 
 
 Getting Started:
 --------------
 
-### Set Up Your Virtual Environment
+1. Clone repository
 
-Create a new virtual environment
+2. Create virtual environment for new app
 
 ```
 virtualenv -p python3 fifapredict
+```
+3. Activate environment
+
+```
 source fifapredict/bin/activate
 ```
 
-Install requirements
+4. Install required packages
 
 ```
 pip install -r requirements.txt
 ```
 
-### Get FIFA Player Dataset
+5. Download FIFA csv files from [Kaggle](https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset) , unzip and store in `/data/external/`
 
-Download FIFA18 complete dataset from [here]https://www.kaggle.com/thec03u5/fifa-18-demo-player-dataset/downloads/fifa-18-demo-player-dataset.zip/5
-Unzip and store in `/data/external/`
-
-### Set up your `.evn` file
+6. Set up fifapredict.env file with the following structure to connect to a database instance:
 
 * Doing the following format in the config.py:
 
@@ -60,12 +61,30 @@ SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}".format(DIALECT,DRIVER,USERNAM
 SQLALCHEMY_TRACK_MODIFICATIONS=False
 ```
 
-### Run code
+6. Set your environment
+ ```source fifapredict.env```
+ 
+7. Load and clean the dataset
+
+```
+python develop/src/data/dataLoading.py
+```
+
+8. Create the model
+
+```
+python develop/src/models/trainModel.py
+```
+
+9. Run the model
 
 ```
 make all
 python app/Flask/application.py
 ```
+
+You should be able to go to the IP address that it responds with and see your FIFA web app.
+
 
 Preprocessing Data
 --------------
