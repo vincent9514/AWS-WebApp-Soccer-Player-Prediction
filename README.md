@@ -62,8 +62,10 @@ SQLALCHEMY_TRACK_MODIFICATIONS=False
 ```
 
 6. Set your environment
- ```source fifapredict.env```
  
+```
+source fifapredict.env
+```
 7. Load and clean the dataset
 
 ```
