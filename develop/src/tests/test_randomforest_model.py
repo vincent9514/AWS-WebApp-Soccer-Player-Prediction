@@ -7,7 +7,7 @@ import pickle
 import logging
 
 def test_randomforest_model():
-    #user inputs
+    #check if the pre-score input gets the expected result for random forest model
     user_inputs = {
         'Age': [20,25,28,30,35],
         'Wage':[10000,50000,150000,100000,60000],
@@ -22,7 +22,7 @@ def test_randomforest_model():
     }
     inputs=pf.DataFrame(data=user_inputs)
     
-    #check type
+    #check data type
     assert isinstance(user_inputs,pd.DataFrame)
     
     #check expected outcome

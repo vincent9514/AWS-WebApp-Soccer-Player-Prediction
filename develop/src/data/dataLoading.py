@@ -22,7 +22,7 @@ logging.basicConfig(level=logging.DEBUG,
                     filename='../../../mymodel.log',
                     filemode='w')
 
-# clean the value string
+
 def str2number(amount):
     """This function makes different dollar units consistent and return cleansed column
 
@@ -35,6 +35,7 @@ def str2number(amount):
     Returns:
         the list with cleased dollar unit
     """
+    # clean the value string
     logger = logging.getLogger(__name__)
     logger.info('Unit Consistent')
     if amount[-1] == 'M':
@@ -60,7 +61,7 @@ def find_continent(x):
     logger = logging.getLogger(__name__)
     logger.info('Country to Continent')
     
-
+    # country to continents maps
     continents = {
         'Africa': ['Algeria', 'Angola', 'Benin', 'Botswana', 'Burkina', 'Burundi', 'Cameroon', 'Cape Verde',
                    'Central African Republic', 'Chad', 'Comoros', 'Congo', 'DR Congo', 'Djibouti', 'Egypt',
@@ -96,6 +97,7 @@ def find_continent(x):
     for key in continents:
         if x in continents[key]:
             return key
+    logger.info('Country to Continent mapped')
     return np.NaN
 
 
@@ -111,9 +113,12 @@ def load_data(input_path):
     Returns:
         X_train, X_test, y_train, y_test values for model input
     """
+    #reading input data
     logger = logging.getLogger(__name__)
     logger.info('Data Loaded')
     dataset = pd.read_csv('input_path', header=0)
+    
+    #select interesting variables
     interesting_columns = [
         "Photo", 'Name', 'Age', 'Nationality', 'Overall',
         'Potential', 'Club', 'Value', 'Wage', 'Special',
@@ -126,13 +131,27 @@ def load_data(input_path):
         'Sliding tackle', 'Sprint speed', 'Stamina', 'Standing tackle',
         'Strength', 'Vision', 'Volleys',
         'Preferred Positions']
-    dataset = pd.DataFrame(dataset, columns=interesting_columns)  # Initial Feature Selection
+    logger.info('variable selected')
+    
+    # Initial Feature Selection
+    dataset = pd.DataFrame(dataset, columns=interesting_columns)
     dataset['ValueNum'] = dataset['Value'].apply(lambda x: str2number(x))
     dataset['WageNum'] = dataset['Wage'].apply(lambda x: str2number(x))
-    dataset['PotentialPoints'] = dataset['Potential'] - dataset['Overall']  # create Potential point
-    dataset['Position'] = dataset['Preferred Positions'].str.split().str[0]  # create position
-    dataset['PositionNum'] = dataset['Preferred Positions'].apply(lambda x: len(x.split()))  # count position number
+    logger.info('Value and Wage created')
+    
+    # create Potential point
+    dataset['PotentialPoints'] = dataset['Potential'] - dataset['Overall']
+    logger.info('create Potential point')
+    
+    # create position
+    dataset['Position'] = dataset['Preferred Positions'].str.split().str[0]
+    logger.info('create preferred position')
+    
+    
+    # count position number
+    dataset['PositionNum'] = dataset['Preferred Positions'].apply(lambda x: len(x.split()))
     dataset['Continent'] = dataset['Nationality'].apply(lambda x: find_continent(x))
+    logger.info('count position number')
 
     X = dataset[['Age', 'WageNum', 'Overall',
                  'Potential', 'Special',

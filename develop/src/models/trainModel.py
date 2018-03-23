@@ -34,20 +34,22 @@ def linear_regression(X_train, X_test, y_train, y_test):
         predictions: prediction result
 
     """
+    # loading the linear regression function
     logger = logging.getLogger(__name__)
     logger.info('Linear Regression')
 
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
     X_test = sc.transform(X_test)
+    
+    # Transforming the input data
+    logging.info('Transforming the input data')
     lm = LinearRegression()
     md1 = lm.fit(X_train, y_train)
     predictions = lm.predict(X_test)
-
-    print('MAE:', metrics.mean_absolute_error(y_test, predictions))
-    print('MSE:', metrics.mean_squared_error(y_test, predictions))
-    print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, predictions)))
-
+    
+    # Creating the model and making prediction
+    logging.info('Model and prediction')
     return md1,predictions
 
 
@@ -68,6 +70,7 @@ def ridge_regression(X_train, X_test, y_train, y_test):
         pred2: prediction result
 
     """
+    # loading the ridge regression function
     logger = logging.getLogger(__name__)
     logger.info('Ridge Regression')
     ridge = Ridge(normalize=True)
@@ -78,11 +81,14 @@ def ridge_regression(X_train, X_test, y_train, y_test):
         ridge.fit(X_train, y_train)
         coefs.append(ridge.coef_)
 
+    # Fit a ridge regression on the training data
     ridge2 = Ridge(alpha=4, normalize=True)
-    ridge2.fit(X_train, y_train)  # Fit a ridge regression on the training data
-    pred2 = ridge2.predict(X_test)  # Use this model to predict the test data
-    print(pd.Series(ridge2.coef_, index=X_train.columns))  # Print coefficients
-    print(mean_squared_error(y_test, pred2))
+    ridge2.fit(X_train, y_train)
+    logging.info('Model created')
+
+    # Use this model to predict the test data
+    pred2 = ridge2.predict(X_test)
+    logging.info('prediction created')
 
     return ridge2, pred2
 
@@ -104,9 +110,9 @@ def lasso_regression(X_train, X_test, y_train, y_test):
         pred3: prediction result
 
     """
+    # loading the lasso regression function
     logger = logging.getLogger(__name__)
     logger.info('Lasso Regression')
-    # Lasso
     lasso = Lasso(max_iter=10000, normalize=True)
     coefs = []
     alphas = 10 ** np.linspace(10, -2, 100) * 0.5
@@ -115,11 +121,14 @@ def lasso_regression(X_train, X_test, y_train, y_test):
         lasso.fit(scale(X_train), y_train)
         coefs.append(lasso.coef_)
 
+    # Fit a lasso regression on the training data
     lasso2 = Lasso(alpha=1000, normalize=True)
-    lasso2.fit(X_train, y_train)  # Fit a lasso regression on the training data
-    pred3 = lasso2.predict(X_test)  # Use this model to predict the test data
-    print(pd.Series(lasso2.coef_, index=X_train.columns))  # Print coefficients
-    print(mean_squared_error(y_test, pred3))
+    lasso2.fit(X_train, y_train)
+    logging.info('Model created')
+
+    # Use this model to predict the test data
+    pred3 = lasso2.predict(X_test)
+    logging.info('prediction created')
 
     return lasso, pred3
 
@@ -141,17 +150,23 @@ def randomforest(X_train, X_test, y_train, y_test):
         rfr_pred: prediction result
 
     """
+    # loading the random forest function
     logger = logging.getLogger(__name__)
     logger.info('Random Forest')
+    
+    # Fit random forest model
     rfr = RandomForestRegressor(n_estimators=100)
     rfr.fit(X_train, y_train)
+    logging.info('Model created')
+    
+    # Make prediction
     rfr_pred = rfr.predict(X_test)
-    print('MAE_rfr:', metrics.mean_absolute_error(y_test, rfr_pred))
-    print('MSE_rfr:', metrics.mean_squared_error(y_test, rfr_pred))
-    print('RMSE_rfr:', np.sqrt(metrics.mean_squared_error(y_test, rfr_pred)))
+    logging.info('prediction created')
 
     with open('rfr.pkl', 'wb') as fid:
         pickle.dump(rfr, fid, 2)
+    #pickle the model
+    logging.info('Pickle Created')
 
     return rfr, rfr_pred
 
@@ -170,14 +185,18 @@ def nnet(X_train, X_test, y_train, y_test):
         predictions: prediction result
 
     """
+    # loading the neural network function
     logger = logging.getLogger(__name__)
     logger.info('Neural Network')
+    
+    # Fit nnet model
     mlp = MLPRegressor(hidden_layer_sizes=(30, 30, 30), max_iter=1000)
     mlp.fit(X_train, y_train)
+    logging.info('Model created')
+    
+    # Make prediction
     predictions = mlp.predict(X_test)
-    print('MAE_nnet:', metrics.mean_absolute_error(y_test, predictions))
-    print('MSE_nnet:', metrics.mean_squared_error(y_test, predictions))
-    print('RMSE_nnet:', np.sqrt(metrics.mean_squared_error(y_test, predictions)))
+    logging.info('Prediction Created')
 
     return mlp, predictions
 

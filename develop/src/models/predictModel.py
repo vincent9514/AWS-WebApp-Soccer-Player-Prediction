@@ -21,16 +21,24 @@ def value_prediction(FIFA):
     """
     model_path = './develop/models/rfr.pkl'
     glove_word2vec_path = './develop/data/external/CompleteDataset.csv'
+    # Model path inputed
+    logging.info('Model path inputed')
 
     # Clean text string
     cleaned_FIFA = dataLoading.load_data(FIFA)
+    logging.info('Clean text string')
 
     # Load pickled model
     model = pickle.load(open(model_path, 'rb'))
     random_forest_model = pickle.load(model)
+    logging.info('Load pickled model')
 
     # Predict final result
-    raw_output= random_forest_model.predict(cleaned_FIFA[2]) #predict using the model
-    real_output=raw_output[0] #generate the output
+    raw_output= random_forest_model.predict(cleaned_FIFA[2])
+    real_output=raw_output[0]
+
+    #generate the output
+    logging.info('Output generated')
+
 
 

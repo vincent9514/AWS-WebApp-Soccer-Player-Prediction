@@ -1,4 +1,4 @@
-#Lasso regression
+
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import Lasso
@@ -10,10 +10,8 @@ import logging
 
 
 
-
-
 def test_lasso_model():
-    #user inputs
+    #check if the pre-score input gets the expected result for lasso model
     user_inputs = {
         'Age': [20,25,28,30,35],
         'Wage':[10000,50000,150000,100000,60000],
@@ -28,7 +26,7 @@ def test_lasso_model():
     }
     inputs=pf.DataFrame(data=user_inputs)
     
-    #check type
+    #check data type
     assert isinstance(user_inputs,pd.DataFrame)
     
     #check expected outcome
