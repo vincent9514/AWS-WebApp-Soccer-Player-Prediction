@@ -21,6 +21,10 @@ If you want to know more, this is a list of selected starting points:
 * [FIFA Offical Website](https://www.easports.com/fifa)
 
 
+Pivotal Tracker Project URL:
+--------------
+[https://www.pivotaltracker.com/n/projects/2143921](https://www.pivotaltracker.com/n/projects/2143921)
+
 Getting Started:
 --------------
 
